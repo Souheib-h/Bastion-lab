@@ -36,12 +36,13 @@ The bastion has no interface on k3s-net or monitoring-net. Every session is a ho
 
 ## Status
 
-| Item             | Status      |
-| ---------------- | ----------- |
-| Network + VM     | Done        |
-| SSH hardening    | Done        |
-| fail2ban         | Done        |
-| ProxyJump access | Done |
+| Item             | Status |
+| ---------------- | ------ |
+| Network + VM     | Done   |
+| SSH hardening    | Done   |
+| fail2ban         | Done   |
+| ProxyJump access | Done   |
+| Monitoring       | Done   |
 
 ---
 
@@ -51,6 +52,7 @@ The bastion has no interface on k3s-net or monitoring-net. Every session is a ho
 |---|---|
 |[Provisioning](docs/provisioning.md)|VM creation, bastion-net setup, routing through OPNsense/FortiGate|
 |[SSH setup](docs/ssh-setup.md)|Server-side hardening and client-side ProxyJump access|
+|[Monitoring](docs/monitoring.md)|Wazuh and Zabbix agents on the bastion|
 |[Architecture Decisions](DECISIONS.md)|Why a separate network, why Alpine, why ProxyJump over a VPN|
 |[Troubleshooting](docs/troubleshooting.md)|Issues hit while building this|
 
