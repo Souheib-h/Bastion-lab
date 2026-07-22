@@ -169,5 +169,4 @@ The `from 10.30.0.10` confirms the session entered through the bastion.
 
 ## What's not done yet
 
-- Connection logging shipped off-host (see [`logging.md`](https://claude.ai/chat/logging.md)).
 - `PermitOpen` restriction to pin forwarding destinations at the sshd level.
