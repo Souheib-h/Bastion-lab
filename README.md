@@ -1,4 +1,4 @@
-# Bastion-lab
+# Bastion-host
 
 > A hardened SSH jump host on its own isolated network, routed through OPNsense/FortiGate, providing controlled access to the K3s-lab-monitoring and K3s-lab networks.
 
@@ -19,14 +19,18 @@ A single-purpose bastion VM sitting on its own network segment. It is not part o
 ## Architecture
 
 ```
-  bastion-net (10.30.0.0/24)
-  Bastion-srv    10.30.0.10
-        |
-        | routed via OPNsense/FortiGate
-        |
-        +--> k3s-net (10.10.0.0/24)
-        +--> monitoring-net (10.20.0.0/24)
+  bastion-net (10.30.0.0/24)                    OPNsense / FortiGate
+  Bastion-srv    10.30.0.10  ─────────────────▶  (router, no direct L2
+                                                   access to either net)
+                                                          │
+                                        ┌─────────────────┴─────────────────┐
+                                        ▼                                   ▼
+                              k3s-net (10.10.0.0/24)          monitoring-net (10.20.0.0/24)
+                              K3s-srv-1/2/3, agents            Zabbix, Wazuh, Prometheus,
+                              K3s-db, Load-srvs                Grafana, Ansible-ctl
 ```
+
+The bastion has no interface on k3s-net or monitoring-net. Every session is a hop through the router, which is the only device with visibility into all three segments.
 
 ---
 
