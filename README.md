@@ -1,4 +1,4 @@
-# Bastion-lab
+# Bastion-host
 
 > A hardened SSH jump host on its own isolated network, routed through OPNsense/FortiGate, providing controlled access to the K3s-lab-monitoring and K3s-lab networks.
 
@@ -36,25 +36,25 @@ The bastion has no interface on k3s-net or monitoring-net. Every session is a ho
 
 ## Status
 
-| Item | Status |
-| ---- | ------ |
-| Network + VM | Done |
-| SSH hardening | Done |
-| fail2ban | Done |
+| Item             | Status      |
+| ---------------- | ----------- |
+| Network + VM     | Done        |
+| SSH hardening    | Done        |
+| fail2ban         | Done        |
 | ProxyJump access | Not started |
-| Logging to Loki | Planned (depends on Loki setup) |
+| Log shipping     | Planned     |
 
 ---
 
 ## Reference
 
-| Doc | Description |
-| --- | ----------- |
-| [Provisioning](docs/provisioning.md) | VM creation, bastion-net setup, routing through OPNsense/FortiGate |
-| [SSH setup](docs/ssh-setup.md) | Server-side hardening and client-side ProxyJump access |
-| [Logging](docs/logging.md) | Connection logging, planned integration with Loki |
-| [Architecture Decisions](DECISIONS.md) | Why a separate network, why Alpine, why ProxyJump over a VPN |
-| [Troubleshooting](docs/troubleshooting.md) | Issues hit while building this |
+|Doc|Description|
+|---|---|
+|[Provisioning](https://claude.ai/chat/docs/provisioning.md)|VM creation, bastion-net setup, routing through OPNsense/FortiGate|
+|[SSH setup](https://claude.ai/chat/docs/ssh-setup.md)|Server-side hardening and client-side ProxyJump access|
+|[Logging](https://claude.ai/chat/docs/logging.md)|What the bastion logs and where those logs are shipped|
+|[Architecture Decisions](https://claude.ai/chat/DECISIONS.md)|Why a separate network, why Alpine, why ProxyJump over a VPN|
+|[Troubleshooting](https://claude.ai/chat/docs/troubleshooting.md)|Issues hit while building this|
 
 ---
 
