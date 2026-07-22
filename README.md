@@ -42,7 +42,6 @@ The bastion has no interface on k3s-net or monitoring-net. Every session is a ho
 | SSH hardening    | Done        |
 | fail2ban         | Done        |
 | ProxyJump access | Done |
-| Log shipping     | Planned     |
 
 ---
 
@@ -50,11 +49,10 @@ The bastion has no interface on k3s-net or monitoring-net. Every session is a ho
 
 |Doc|Description|
 |---|---|
-|[Provisioning](https://claude.ai/chat/docs/provisioning.md)|VM creation, bastion-net setup, routing through OPNsense/FortiGate|
-|[SSH setup](https://claude.ai/chat/docs/ssh-setup.md)|Server-side hardening and client-side ProxyJump access|
-|[Logging](https://claude.ai/chat/docs/logging.md)|What the bastion logs and where those logs are shipped|
-|[Architecture Decisions](https://claude.ai/chat/DECISIONS.md)|Why a separate network, why Alpine, why ProxyJump over a VPN|
-|[Troubleshooting](https://claude.ai/chat/docs/troubleshooting.md)|Issues hit while building this|
+|[Provisioning](docs/provisioning.md)|VM creation, bastion-net setup, routing through OPNsense/FortiGate|
+|[SSH setup](docs/ssh-setup.md)|Server-side hardening and client-side ProxyJump access|
+|[Architecture Decisions](DECISIONS.md)|Why a separate network, why Alpine, why ProxyJump over a VPN|
+|[Troubleshooting](docs/troubleshooting.md)|Issues hit while building this|
 
 ---
 
