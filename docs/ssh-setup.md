@@ -96,8 +96,78 @@ scp alpine-admin@10.30.0.10:/etc/fail2ban/jail.local configs/fail2ban-jail.local
 
 ![Configs copied from the VM into the repo](img/scp-de-config-ssh-failbane.png)
 
+## 6. TCP forwarding
+
+A jump host relays SSH sessions, which requires TCP forwarding. Alpine's sshd disables it by default; the directive is switched to `yes` in the existing line of `sshd_config`:
+
+```bash
+sudo sed -i 's/^AllowTcpForwarding no/AllowTcpForwarding yes/' /etc/ssh/sshd_config
+sudo sshd -t
+sudo rc-service sshd restart
+```
+
+Forwarding is still constrained in practice by the router firewall: only `10.30.0.10/32` is allowed into the two lab networks.
+
+Full file: [`configs/sshd_config.example`](configs/sshd_config.example)
+
+## 7. Key strategy, one key per role
+
+Each access path uses its own dedicated key pair:
+
+|Key|Purpose|Authorized on|
+|---|---|---|
+|`bastion_key`|Operator -> bastion|Bastion-srv only|
+|`lab_key`|Operator -> lab hosts|The 13 k3s-net / monitoring-net VMs|
+|`ansible-control`|Ansible control node -> managed hosts|The 13 VMs|
+
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/bastion_key -C "operator-to-bastion"
+ssh-keygen -t ed25519 -f ~/.ssh/lab_key -C "operator-to-lab-hosts"
+
+ssh-copy-id -i ~/.ssh/bastion_key.pub alpine-admin@10.30.0.10
+# lab_key deployed to each lab host the same way
+```
+
+The bastion holds no private keys. ProxyJump tunnels authentication from the operator's machine through it, so the bastion only ever relays.
+
+## 8. Client-side ProxyJump
+
+`~/.ssh/config` on the operator's machine:
+
+```
+Host bastion
+    HostName 10.30.0.10
+    User alpine-admin
+    IdentityFile ~/.ssh/bastion_key
+
+Host zabbix-srv
+    HostName 10.20.0.10
+    User zabbix-admin
+    ProxyJump bastion
+    IdentityFile ~/.ssh/lab_key
+
+Host k3s-srv-1
+    HostName 10.10.0.11
+    User k3s-admin
+    ProxyJump bastion
+    IdentityFile ~/.ssh/lab_key
+```
+
+Full file: [`configs/ssh-client-config.example`](configs/ssh-client-config.example)
+
+One command, one transparent hop through the bastion:
+
+```
+$ ssh zabbix-srv
+...
+Last login: Wed Jul 22 15:12:13 2026 from 10.30.0.10
+```
+
+
+![Jump server jumping ](img/jump-server-jumping-to-zabbix.png)
+The `from 10.30.0.10` confirms the session entered through the bastion.
+
 ## What's not done yet
 
-- ProxyJump client config (`~/.ssh/config` on the operator's machine) — depends on the router route existing first.
-- Routing bastion-net to k3s-net and monitoring-net through OPNsense/FortiGate.
-- Connection logging shipped to Loki (planned, see [`logging.md`](logging.md)).
+- Connection logging shipped off-host (see [`logging.md`](https://claude.ai/chat/logging.md)).
+- `PermitOpen` restriction to pin forwarding destinations at the sshd level.

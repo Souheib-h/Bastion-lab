@@ -41,7 +41,7 @@ The bastion has no interface on k3s-net or monitoring-net. Every session is a ho
 | Network + VM     | Done        |
 | SSH hardening    | Done        |
 | fail2ban         | Done        |
-| ProxyJump access | Not started |
+| ProxyJump access | Done |
 | Log shipping     | Planned     |
 
 ---

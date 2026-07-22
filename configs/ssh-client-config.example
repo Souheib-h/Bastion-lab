@@ -1,0 +1,16 @@
+Host bastion
+    HostName 10.30.0.10
+    User alpine-admin
+    IdentityFile ~/.ssh/bastion_key
+
+Host zabbix-srv
+    HostName 10.20.0.10
+    User zabbix-admin
+    ProxyJump bastion
+    IdentityFile ~/.ssh/lab_key
+
+Host k3s-srv-1
+    HostName 10.10.0.11
+    User k3s-admin
+    ProxyJump bastion
+    IdentityFile ~/.ssh/lab_key
