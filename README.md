@@ -38,9 +38,9 @@ The bastion has no interface on k3s-net or monitoring-net. Every session is a ho
 
 | Item | Status |
 | ---- | ------ |
-| Network + VM | Not started |
-| SSH hardening | Not started |
-| fail2ban | Not started |
+| Network + VM | Done |
+| SSH hardening | Done |
+| fail2ban | Done |
 | ProxyJump access | Not started |
 | Logging to Loki | Planned (depends on Loki setup) |
 
