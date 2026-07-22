@@ -1,4 +1,4 @@
-# Bastion-host
+# Bastion-lab
 
 > A hardened SSH jump host on its own isolated network, routed through OPNsense/FortiGate, providing controlled access to the K3s-lab-monitoring and K3s-lab networks.
 
