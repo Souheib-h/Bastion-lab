@@ -129,3 +129,4 @@ PubkeyAuthentication yes
 MaxAuthTries 3
 ClientAliveInterval 300
 ClientAliveCountMax 2
+AllowUsers alpine-admin@10.30.0.1

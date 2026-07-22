@@ -167,6 +167,33 @@ Last login: Wed Jul 22 15:12:13 2026 from 10.30.0.10
 ![Jump server jumping ](img/jump-server-jumping-to-zabbix.png)
 The `from 10.30.0.10` confirms the session entered through the bastion.
 
-## What's not done yet
+## 9. Restricting access to the operator's host
 
-- `PermitOpen` restriction to pin forwarding destinations at the sshd level.
+The bastion accepts SSH only from the operator's machine, identified by its address on bastion-net (`10.30.0.1`). This is enforced at the sshd level with `AllowUsers`:
+
+```bash
+sudo sed -i '$ a AllowUsers alpine-admin@10.30.0.1' /etc/ssh/sshd_config
+sudo sshd -t
+sudo rc-service sshd restart
+```
+
+Any connection from a different source address is rejected before key authentication, even with a valid key.
+
+Verify the directive is active in the resolved config:
+
+```bash
+ssh bastion "sudo sshd -T | grep -i allowusers"
+# allowusers alpine-admin@10.30.0.1
+```
+
+Confirm a non-authorized source is refused. From the bastion, a loopback connection has source `127.0.0.1`, which does not match `10.30.0.1`:
+
+```bash
+ssh -o StrictHostKeyChecking=no alpine-admin@127.0.0.1 hostname
+# Permission denied (publickey,keyboard-interactive)
+```
+
+![ ](img/Permission-denied.png)
+
+This sits on top of the network layer: lab hosts already cannot reach the bastion at 
+all (the router only permits `10.30.0.10/32` outbound into the lab networks, not inbound to the bastion). `AllowUsers` is the second line, catching anything that would reach port 22 from an unexpected address.
