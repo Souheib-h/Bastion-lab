@@ -85,7 +85,7 @@ sudo rc-service networking restart
 
 ![Gateway and internet reachable — ping to 10.30.0.1 and 8.8.8.8, DNS resolving google.com](img/static-ip-setup-done.png)
 
-At this point `bastion-net` only has outbound internet access through libvirt's own NAT — there is no route yet to `k3s-net` or `monitoring-net`. That routing is configured on OPNsense/FortiGate, not here (see the main lab's network docs).
+At this point `bastion-net` only has outbound internet access through libvirt's own NAT — there is no route yet to `k3s-net` or `monitoring-net`. That routing is configured on OPNsense, not here (see the main lab's network docs).
 
 ## 5. Base system update
 

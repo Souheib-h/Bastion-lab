@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-This document captures the key architectural decisions made throughout the `Bastion-host` project, not _what_ was built, but _why_ it was built that way.
+This document captures the key architectural decisions made throughout the `Bastion-lab` project, not _what_ was built, but _why_ it was built that way.
 
 ---
 
@@ -14,7 +14,7 @@ The bastion needs to reach both k3s-net (10.10.0.0/24) and monitoring-net (10.20
 
 ### Decision
 
-A third isolated network, `bastion-net` (10.30.0.0/24), routed to both existing networks through OPNsense/FortiGate.
+A third isolated network, `bastion-net` (10.30.0.0/24), routed to both existing networks through OPNsense (the FortiGate migration planned in K3s-lab-monitoring ADR-013 is blocked).
 
 ### Why
 
