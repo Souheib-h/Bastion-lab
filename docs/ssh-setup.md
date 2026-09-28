@@ -195,5 +195,12 @@ ssh -o StrictHostKeyChecking=no alpine-admin@127.0.0.1 hostname
 
 ![ ](img/Permission-denied.png)
 
-This sits on top of the network layer: lab hosts already cannot reach the bastion at 
-all (the router only permits `10.30.0.10/32` outbound into the lab networks, not inbound to the bastion). `AllowUsers` is the second line, catching anything that would reach port 22 from an unexpected address.
+This sits on top of the network layer: cluster hosts cannot reach the bastion at all. The OPNsense `k3snet` interface only lets k3s-net open connections to the Wazuh, Zabbix and Loki ports and to the Internet ([K3s-lab-monitoring ADR-016 amendment](https://github.com/Souheib-h/K3s-lab-monitoring/blob/main/DECISIONS.md)); everything else, the bastion included, hits the default deny. `AllowUsers` is the second line, catching anything that would reach port 22 from an unexpected address.
+
+Verified on 2026-09-28: `health-check.yml` (K3s-lab-monitoring) pings `10.30.0.10` from every host, and all 8 k3s-net hosts failed while the monitoring-net hosts succeeded. The playbook now reports this as `Isolation bastion` and flags it if the bastion ever answers from k3s-net. Manual check from any k3s node:
+
+```bash
+nc -zv -w3 10.30.0.10 22   # expected: timed out
+```
+
+> Between ADR-016 (a `k3snet net → any` rule, 2026-08-29) and its amendment (2026-09-28), this was **not** true: cluster hosts could reach the bastion.
