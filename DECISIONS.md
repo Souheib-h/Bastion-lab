@@ -20,7 +20,7 @@ A third isolated network, `bastion-net` (10.30.0.0/24), routed to both existing 
 
 - A dual-homed bastion sits directly on the networks it is meant to gate; a compromise gives an attacker L2 presence on both. A routed bastion never touches either network at L2.
 - Matches the segmentation pattern already used between k3s-net and monitoring-net (see K3s-lab-monitoring ADR-001).
-- Centralizes routing and firewsteraring decisions in one place (the router), not spread across every host that needs cross-network access.
+- Centralizes routing and firewalling decisions in one place (the router), not spread across every host that needs cross-network access.
 
 ### Alternatives rejected
 

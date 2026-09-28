@@ -108,7 +108,7 @@ sudo rc-service sshd restart
 
 Forwarding is still constrained in practice by the router firewall: only `10.30.0.10/32` is allowed into the two lab networks.
 
-Full file: [`configs/sshd_config.example`](configs/sshd_config.example)
+Full file: [`configs/sshd_config.example`](../configs/sshd_config.example)
 
 ## 7. Key strategy, one key per role
 
@@ -153,7 +153,7 @@ Host k3s-srv-1
     IdentityFile ~/.ssh/lab_key
 ```
 
-Full file: [`configs/ssh-client-config.example`](configs/ssh-client-config.example)
+Full file: [`configs/ssh-client-config.example`](../configs/ssh-client-config.example)
 
 One command, one transparent hop through the bastion:
 

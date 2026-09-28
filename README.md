@@ -54,7 +54,6 @@ The bastion has no interface on k3s-net or monitoring-net. Every session is a ho
 |[SSH setup](docs/ssh-setup.md)|Server-side hardening and client-side ProxyJump access|
 |[Monitoring](docs/monitoring.md)|Wazuh and Zabbix agents on the bastion|
 |[Architecture Decisions](DECISIONS.md)|Why a separate network, why Alpine, why ProxyJump over a VPN|
-|[Troubleshooting](docs/troubleshooting.md)|Issues hit while building this|
 
 ---
 
