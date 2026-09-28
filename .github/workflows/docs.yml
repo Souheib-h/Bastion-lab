@@ -1,0 +1,52 @@
+name: docs
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: Internal links and anchors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check relative links, images and #anchors
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # --offline: only files in the repo; external URLs are not fetched
+          args: --offline --include-fragments --no-progress './**/*.md'
+          fail: true
+
+  images:
+    name: Image size
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Warn on new or changed images over 500 KB
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          base="$PUSH_BEFORE"
+          [ "$EVENT" = "pull_request" ] && base="$PR_BASE"
+          # New branch (before = 000…): compare with where it forked from the default branch
+          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            base=$(git merge-base "origin/$DEFAULT_BRANCH" HEAD 2>/dev/null || git rev-list --max-parents=0 HEAD | tail -1)
+          fi
+          count=0
+          while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            size=$(stat -c%s "$f")
+            if [ "$size" -gt 512000 ]; then
+              count=$((count + 1))
+              echo "::warning file=$f::$((size / 1024)) KB. Compress before committing: pngquant --skip-if-larger --strip --quality=70-90 --ext .png --force '$f'"
+            fi
+          done < <(git diff --name-only --diff-filter=AM "$base" HEAD -- '*.png' '*.jpg' '*.jpeg')
+          echo "$count image(s) over 500 KB in this change"

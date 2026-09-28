@@ -2,11 +2,16 @@ Host bastion
     HostName 10.30.0.10
     User alpine-admin
     IdentityFile ~/.ssh/bastion_key
+    IdentitiesOnly yes
 
 # Tous les hosts des deux réseaux du lab passent par le bastion
 Host k3s-* load-srvs zabbix-srv wazuh-srv prometheus-srv grafana-srv ansible-srv 10.10.0.* 10.20.0.*
     ProxyJump bastion
     IdentityFile ~/.ssh/lab_key
+    # Offer only lab_key: with several keys loaded in ssh-agent, extra
+    # attempts count against MaxAuthTries 3 and end in
+    # "Too many authentication failures".
+    IdentitiesOnly yes
 
 # Alias nommés par host
 Host k3s-srv-1

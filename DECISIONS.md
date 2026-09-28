@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-This document captures the key architectural decisions made throughout the `Bastion-host` project, not _what_ was built, but _why_ it was built that way.
+This document captures the key architectural decisions made throughout the `Bastion-lab` project, not _what_ was built, but _why_ it was built that way.
 
 ---
 
@@ -14,13 +14,13 @@ The bastion needs to reach both k3s-net (10.10.0.0/24) and monitoring-net (10.20
 
 ### Decision
 
-A third isolated network, `bastion-net` (10.30.0.0/24), routed to both existing networks through OPNsense/FortiGate.
+A third isolated network, `bastion-net` (10.30.0.0/24), routed to both existing networks through OPNsense (the FortiGate migration planned in K3s-lab-monitoring ADR-013 is blocked).
 
 ### Why
 
 - A dual-homed bastion sits directly on the networks it is meant to gate; a compromise gives an attacker L2 presence on both. A routed bastion never touches either network at L2.
 - Matches the segmentation pattern already used between k3s-net and monitoring-net (see K3s-lab-monitoring ADR-001).
-- Centralizes routing and firewsteraring decisions in one place (the router), not spread across every host that needs cross-network access.
+- Centralizes routing and firewalling decisions in one place (the router), not spread across every host that needs cross-network access.
 
 ### Alternatives rejected
 

@@ -18,7 +18,7 @@ sudo apk add wazuh-agent    # installs 4.8.2
 # Point the agent at the manager
 sudo sed -i 's|<address>MANAGER_IP</address>|<address>10.20.0.11</address>|' /var/ossec/etc/ossec.conf
 
-# OpenRC init script (reused from K3s-lab-monitoring, configs/ansible/files/wazuh-agentd.initd)
+# OpenRC init script (reused from K3s-lab-monitoring, configs/ansible/playbooks/files/wazuh-agentd.initd)
 sudo cp wazuh-agentd.initd /etc/init.d/wazuh-agentd
 sudo chmod +x /etc/init.d/wazuh-agentd
 sudo rc-update add wazuh-agentd default
